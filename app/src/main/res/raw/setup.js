@@ -21,7 +21,6 @@ function installScript(id,name){
 		// the script already exists: update its text
 		script.setText(script_text);
 	}
-
 	return script;
 }
 
@@ -70,6 +69,10 @@ var fixBox=new CheckBox(LL.getContext());
 fixBox.setText("Orientationfix (Fixes bug when changing orientation while folder opened, but may break desktop boundings)");
 fixBox.setChecked(data.fix||false);
 root.addView(fixBox);
+var closeBox=new CheckBox(LL.getContext());
+closeBox.setText("Close all Folders if background is clicked");
+closeBox.setChecked(data.close||false);
+root.addView(closeBox);
 var builder=new AlertDialog.Builder(LL.getContext());
 builder.setView(root);
 builder.setCancelable(true);
@@ -99,6 +102,7 @@ builder.setPositiveButton("Confirm",new DialogInterface.OnClickListener()
             data.dim=dim;
             data.fix=fixBox.isChecked();
             data.bars=barBox.isChecked();
+            data.close=closeBox.isChecked();
             c.setTag("dim",JSON.stringify(data));
             c.getProperties().edit().setEventHandler("resumed",EventHandler.RUN_SCRIPT,script.getId()).setEventHandler("paused",EventHandler.RUN_SCRIPT,script.getId()).commit();
             Android.makeNewToast("Done!",true).show();
